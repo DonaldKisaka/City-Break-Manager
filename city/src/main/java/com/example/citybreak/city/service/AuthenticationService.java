@@ -1,6 +1,7 @@
 package com.example.citybreak.city.service;
 
 import com.example.citybreak.city.config.JwtService;
+import com.example.citybreak.city.dto.AuthenticationResponseDto;
 import com.example.citybreak.city.dto.CreateUserDto;
 import com.example.citybreak.city.dto.LoginUserDto;
 import com.example.citybreak.city.model.User;
@@ -28,9 +29,9 @@ public class AuthenticationService {
         this.jwtService = jwtService;
     }
 
-    public User signup(CreateUserDto input) {
+    public AuthenticationResponseDto signup(CreateUserDto input) {
 
-        try {
+
             if (userRepository.findByEmail(input.email()).isPresent()) {
                 throw new RuntimeException("Email already exists");
             }
@@ -42,15 +43,16 @@ public class AuthenticationService {
             );
 
             user.setEnabled(true);
+            userRepository.save(user);
 
-            return userRepository.save(user);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            String jwtToken = jwtService.generateToken(user);
+
+            return new AuthenticationResponseDto(jwtToken, user.getUsername(), user.getEmail());
+
     }
 
-    public User authenticate(LoginUserDto input) {
-        try {
+    public AuthenticationResponseDto authenticate(LoginUserDto input) {
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             input.email(),
@@ -58,19 +60,15 @@ public class AuthenticationService {
                     )
             );
 
-            return userRepository.findByEmail(input.email()).orElseThrow(() -> new RuntimeException("User not found"));
+            User user = userRepository.findByEmail(input.email()).orElseThrow(() -> new RuntimeException("User not found"));
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            String jwtToken = jwtService.generateToken(user);
+
+            return new AuthenticationResponseDto(jwtToken, user.getUsername(), user.getEmail());
+
+
     }
 
-    public String generateToken(User user) {
-        return jwtService.generateToken(user);
-    }
 
-    public long getExpirationTime() {
-        return jwtService.getExpirationTime();
-    }
 
 }
