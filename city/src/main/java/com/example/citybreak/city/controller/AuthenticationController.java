@@ -1,6 +1,5 @@
 package com.example.citybreak.city.controller;
 
-import com.example.citybreak.city.config.JwtService;
 import com.example.citybreak.city.dto.AuthenticationResponseDto;
 import com.example.citybreak.city.dto.CreateUserDto;
 import com.example.citybreak.city.dto.LoginUserDto;
