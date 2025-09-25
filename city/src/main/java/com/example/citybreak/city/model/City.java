@@ -27,4 +27,16 @@ public class City {
     @Size(max = 1000, message = "Details should be less than 1000 characters")
     @Column(length = 2000)
     private String details;
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", details='" + details + '\'' +
+                '}';
+    }
 }
+
+

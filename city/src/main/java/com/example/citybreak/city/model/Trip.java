@@ -38,4 +38,16 @@ public class Trip {
 
     @Column(length = 1000)
     private String personalNotes;
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", city=" + city +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", rating=" + rating +
+                ", personalNotes='" + personalNotes + '\'' +
+                '}';
+    }
 }
