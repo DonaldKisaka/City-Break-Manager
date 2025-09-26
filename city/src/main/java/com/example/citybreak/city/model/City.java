@@ -28,6 +28,10 @@ public class City {
     @Column(length = 2000)
     private String details;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Override
     public String toString() {
         return "City{" +
